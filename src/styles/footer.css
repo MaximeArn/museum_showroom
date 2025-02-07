@@ -1,0 +1,14 @@
+.footer {
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+}
+
+.footer span {
+  margin-left: 8px;
+  margin-right: 4px;
+}
