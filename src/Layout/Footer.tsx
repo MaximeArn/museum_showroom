@@ -3,7 +3,7 @@ export default function Footer() {
   return (
     <header className="footer">
       <p className="footer__title">
-        Museum
+        Metropolitan
         <span>©</span>
         all rights reserved
       </p>
