@@ -8,10 +8,18 @@
 }
 
 .header a {
+  font-size: 0.9rem;
   color: black;
   text-decoration: none;
+}
+.header nav a {
+  font-size: 0.7rem;
 }
 
 .header li {
   list-style: none;
+}
+
+.header a:hover {
+  color: #099984;
 }
