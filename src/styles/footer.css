@@ -5,10 +5,13 @@
   left: 0;
   bottom: 0;
   width: 100%;
+  background-color: #14213d;
+  color: #e5e5e5;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
 }
 
 .footer span {
-  margin-left: 8px;
-  margin-right: 4px;
+  margin-left: 6px;
+  margin-right: 6px;
+  color: #fca311;
 }

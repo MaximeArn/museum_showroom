@@ -1,9 +1,12 @@
-import { useState } from "react";
-import "../styles/searchBar.css";
+import { useState, useRef, useEffect } from "react";
 import SearchBarResult from "./searchBarResult";
+import "../styles/searchBar.css";
+
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isClickingResult, setIsClickingResult] = useState(false);
+  const searchBarRef = useRef<HTMLDivElement>(null);
 
   const handleSearchInputChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -32,22 +35,47 @@ export default function SearchBar() {
     }
   };
 
+  const handleBlur = () => {
+    if (!isClickingResult) {
+      setSearchValue("");
+      setSearchResults([]);
+    }
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      searchBarRef.current &&
+      !searchBarRef.current.contains(event.target as Node)
+    ) {
+      setSearchValue("");
+      setSearchResults([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="search-bar-container">
+    <div className="search-bar-container" ref={searchBarRef}>
       <form className="search-bar">
         <input
           type="text"
           placeholder="Search..."
           value={searchValue}
           onChange={handleSearchInputChange}
-          onBlur={() => {
-            setSearchValue("");
-            setSearchResults([]);
-          }}
+          onBlur={handleBlur}
         />
       </form>
       {searchResults.length > 0 && (
-        <ul className="search-results">
+        <ul
+          className="search-results"
+          onMouseDown={() => setIsClickingResult(true)}
+          onMouseUp={() => setIsClickingResult(false)}
+        >
           {searchResults.map((resultId) => {
             return <SearchBarResult key={resultId} resultId={resultId} />;
           })}

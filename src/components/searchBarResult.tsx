@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "../styles/searchBarResult.css";
 import { Link } from "react-router";
+import "../styles/searchBarResult.css";
 interface SearchBarResultProps {
   resultId: string;
 }
@@ -39,7 +39,7 @@ export default function SearchBarResult({ resultId }: SearchBarResultProps) {
   if (error) return null;
   return (
     <li className="search-result">
-      <Link to={`/object/${resultId}`} className="result-link">
+      <Link to={`/objects/${resultId}`} className="result-link">
         {result?.primaryImageSmall && (
           <img
             src={result.primaryImageSmall}
