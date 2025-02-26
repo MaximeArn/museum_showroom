@@ -28,7 +28,6 @@ export default function SearchBar() {
       );
       const results = await response.json();
       if (!results.total) return;
-
       setSearchResults(results.objectIDs.slice(0, 15));
     } catch (error) {
       console.error("Error fetching search results", error);

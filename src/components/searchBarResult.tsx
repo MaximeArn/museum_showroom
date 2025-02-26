@@ -24,7 +24,6 @@ export default function SearchBarResult({ resultId }: SearchBarResultProps) {
       const response = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${resultId}`
       );
-      console.log(response.status);
       if (response.status === 404) {
         setError(true);
         return;
