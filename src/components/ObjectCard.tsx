@@ -12,7 +12,6 @@ export default function ObjectCard({ id }: { id: number }) {
       );
       const data: MetObject = await response.json();
       setObject(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
