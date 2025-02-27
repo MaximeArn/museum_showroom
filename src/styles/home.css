@@ -1,9 +1,9 @@
-h2 {
+.page-title {
   margin-top: 70px;
   font-size: 2rem;
 }
 
-p {
+.page-text {
   font-style: italic;
   margin-bottom: 50px;
 }

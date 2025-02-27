@@ -21,31 +21,28 @@ export default function ObjectCard({ id }: { id: number }) {
     fetchObjetInfo();
   }, []);
 
-  if (!object) {
-    return <p>Loading...</p>;
-  }
-
   return (
-    <div className="object-card">
-      {object.primaryImageSmall ? (
-        <img src={object.primaryImageSmall} alt={object.title} />
-      ) : (
-        <div className="placeholder">No Image Available</div>
-      )}
-      <div className="object-info">
-        <h3>{object.title || "Unknown Title"}</h3>
-        <p>
-          <strong>Artist:</strong>{" "}
-          {object.artistDisplayName || "Unknown Artist"}
-        </p>
-        <p>
-          <strong>Year:</strong> {object.objectDate || "Unknown Date"}
-        </p>
-        <p>
-          <strong>Medium:</strong> {object.medium || "Unknown Medium"}
-        </p>
-        <Link to={`/objects/${object.objectID}`}>View More</Link>
-      </div>
-    </div>
+    object && (
+      <Link to={`/objects/${object.objectID}`} className="object-card">
+        {object.primaryImageSmall ? (
+          <img src={object.primaryImageSmall} alt={object.title} />
+        ) : (
+          <div className="placeholder">No Image Available</div>
+        )}
+        <h3>{object.title.slice(0, 40) + "..." || "Unknown Title"}</h3>
+        <div className="object-info">
+          <p>
+            <strong>Artist:</strong>{" "}
+            {object.artistDisplayName || "Unknown Artist"}
+          </p>
+          <p>
+            <strong>Year:</strong> {object.objectDate || "Unknown Date"}
+          </p>
+          <p>
+            <strong>Medium:</strong> {object.medium || "Unknown Medium"}
+          </p>
+        </div>
+      </Link>
+    )
   );
 }

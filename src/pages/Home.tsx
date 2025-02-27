@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ObjectCard from "../components/ObjectCard";
 import "../styles/home.css";
+// import "../styles/global.css";
+import Loader from "../components/Loader";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,13 +31,15 @@ export default function Home() {
   }, []);
 
   return isLoading ? (
-    <p>Laoding</p>
+    <Loader />
   ) : (
     <>
-      <h2>
+      <h2 className="page-title">
         Welcome to <strong>The Metropolitan Museum Website</strong> !
       </h2>
-      <p>Here are some of the highlighted objects in our collections</p>
+      <p className="page-text">
+        Here are some of the highlighted objects in our collections
+      </p>
       <ul className="objectList">
         {highlightedObjectsIDs.map((obectId) => (
           <ObjectCard id={obectId} />

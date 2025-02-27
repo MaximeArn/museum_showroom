@@ -12,3 +12,11 @@ main {
   min-height: 100vh;
   text-align: center;
 }
+
+.loader-container {
+  padding-top: 50px;
+}
+
+.loader-container > p {
+  margin-bottom: 10px;
+}
