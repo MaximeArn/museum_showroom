@@ -58,7 +58,6 @@
   color: #fff;
 }
 
-/* Responsive styles for small screens */
 @media (max-width: 768px) {
   .object-details-container {
     flex-direction: column;

@@ -1,85 +1,71 @@
-import { useState, useRef, useEffect } from "react";
-import SearchBarResult from "./searchBarResult";
-import "../styles/searchBar.css";
+import React, { useState } from "react";
 
-export default function SearchBar() {
-  const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isClickingResult, setIsClickingResult] = useState(false);
-  const searchBarRef = useRef<HTMLDivElement>(null);
+interface SearchBarProps {
+  onSearch: (
+    query: string,
+    dateBegin?: number,
+    dateEnd?: number,
+    isOnView?: boolean
+  ) => void;
+}
 
-  const handleSearchInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    e.preventDefault();
-    const inputValue = e.target.value.trim().toLowerCase();
-    setSearchValue(inputValue);
-    await fetchResults(inputValue);
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateBegin, setDateBegin] = useState<number | undefined>(undefined);
+  const [dateEnd, setDateEnd] = useState<number | undefined>(undefined);
+  const [isOnView, setIsOnView] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
-  const fetchResults = async (inputValue: string) => {
-    if (!inputValue) {
-      setSearchResults([]);
-      return;
-    }
-    try {
-      const response = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?title=true&q=${inputValue}`
-      );
-      const results = await response.json();
-      if (!results.total) return;
-      setSearchResults(results.objectIDs.slice(0, 15));
-    } catch (error) {
-      console.error("Error fetching search results", error);
-    }
+  const handleDateBeginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateBegin(e.target.value ? parseInt(e.target.value) : undefined);
   };
 
-  const handleBlur = () => {
-    if (!isClickingResult) {
-      setSearchValue("");
-      setSearchResults([]);
-    }
+  const handleDateEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateEnd(e.target.value ? parseInt(e.target.value) : undefined);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      searchBarRef.current &&
-      !searchBarRef.current.contains(event.target as Node)
-    ) {
-      setSearchValue("");
-      setSearchResults([]);
-    }
+  const handleIsOnViewChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsOnView(e.target.checked);
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleSearch = () => {
+    onSearch(searchQuery, dateBegin, dateEnd, isOnView);
+  };
 
   return (
-    <div className="search-bar-container" ref={searchBarRef}>
-      <form className="search-bar">
+    <div className="search-bar">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={handleInputChange}
+        placeholder="Search..."
+      />
+      <input
+        type="number"
+        value={dateBegin ?? ""}
+        onChange={handleDateBeginChange}
+        placeholder="Start Year"
+      />
+      <input
+        type="number"
+        value={dateEnd ?? ""}
+        onChange={handleDateEndChange}
+        placeholder="End Year"
+      />
+      <label>
         <input
-          type="text"
-          placeholder="Search..."
-          value={searchValue}
-          onChange={handleSearchInputChange}
-          onBlur={handleBlur}
+          type="checkbox"
+          checked={isOnView}
+          onChange={handleIsOnViewChange}
         />
-      </form>
-      {searchResults.length > 0 && (
-        <ul
-          className="search-results"
-          onMouseDown={() => setIsClickingResult(true)}
-          onMouseUp={() => setIsClickingResult(false)}
-        >
-          {searchResults.map((resultId) => {
-            return <SearchBarResult key={resultId} resultId={resultId} />;
-          })}
-        </ul>
-      )}
+        On View
+      </label>
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
-}
+};
+
+export default SearchBar;

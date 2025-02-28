@@ -34,3 +34,12 @@ export interface MetObject {
   objectURL: string;
   tags?: { term: string }[];
 }
+
+export interface SearchQuery {
+  q?: string;
+  departmentId?: string;
+  dateBegin?: string;
+  dateEnd?: string;
+  isOnView?: boolean;
+  hasImages?: boolean;
+}

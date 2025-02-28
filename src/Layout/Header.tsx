@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import SearchBar from "../components/searchBar";
+import SearchBar from "../components/MiniSearchBar";
 import "../styles/header.css";
 export default function Header() {
   return (

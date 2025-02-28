@@ -4,22 +4,27 @@ import "../styles/objectCard.css";
 import { Link } from "react-router";
 
 export default function ObjectCard({ id }: { id: number }) {
-  const [object, setObject] = useState<MetObject>();
-  const fetchObjetInfo = async () => {
+  const [object, setObject] = useState<MetObject | null>(null);
+
+  const fetchObjectInfo = async () => {
     try {
       const response = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`
       );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data: MetObject = await response.json();
       setObject(data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching object data:", error);
+      setObject(null);
     }
   };
 
   useEffect(() => {
-    fetchObjetInfo();
-  }, []);
+    fetchObjectInfo();
+  }, [id]);
 
   return (
     object && (
@@ -29,7 +34,7 @@ export default function ObjectCard({ id }: { id: number }) {
         ) : (
           <div className="placeholder">No Image Available</div>
         )}
-        <h3>{object.title.slice(0, 40) + "..." || "Unknown Title"}</h3>
+        <h3>{object.title || "Unknown Title"}</h3>
         <div className="object-info">
           <p>
             <strong>Artist:</strong>{" "}
