@@ -12,7 +12,7 @@ export default function SearchBar() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
-    const inputValue = e.target.value.trim().toLowerCase();
+    const inputValue = e.target.value.toLowerCase();
     setSearchValue(inputValue);
     await fetchResults(inputValue);
   };
@@ -24,7 +24,7 @@ export default function SearchBar() {
     }
     try {
       const response = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?title=true&q=${inputValue}`
+        `https://collectionapi.metmuseum.org/public/collection/v1/search?title=true&q=${inputValue.trim()}`
       );
       const results = await response.json();
       if (!results.total) return;
@@ -60,7 +60,7 @@ export default function SearchBar() {
 
   return (
     <div className="search-bar-container" ref={searchBarRef}>
-      <form className="search-bar">
+      <form className="search-bar mini">
         <input
           type="text"
           placeholder="Search..."
